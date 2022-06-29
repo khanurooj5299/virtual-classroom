@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="h4 text-center text-danger" *ngIf="!courses.length">No courses exist</div>
+    <div class="d-flex justify-content-end">
+        <mat-form-field appearance="standard" *ngIf="courses.length">
+            <mat-label>Filter</mat-label>
+            <input 
+                matInput
+                type="text"
+                (keyup)="applyFilter($event)"
+                >
+        </mat-form-field>
+    </div>
+    <div class="table-container">
+    <table mat-table [dataSource]="dataSource" *ngIf="courses.length">
+    <ng-container matColumnDef="courses">
+        <th mat-header-cell *matHeaderCellDef>Courses</th>
+        <td mat-cell *matCellDef="let course">{{course.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Download Admit Card</th>
+        <td mat-cell *matCellDef="let course">
+            <i class="fa fa-download fa-lg" (click)="onDownload(course)"></i>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

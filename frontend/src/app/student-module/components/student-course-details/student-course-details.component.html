@@ -1,0 +1,63 @@
+<div class="container mt-3">
+    <mat-card class="picture-card float-md-end mb-2">
+            <img mat-card-image [src]="course.image" alt="" class="mb-3">
+            <mat-card-content>
+                <h2>{{ course.name }} </h2>
+                <button mat-raised-button color="primary" class="me-2 mb-2" (click)="onCourseEnroll()">Enroll me</button>
+                <button mat-raised-button color="primary" (click)="onBack()">Back</button>
+            </mat-card-content>
+    </mat-card>
+    <div class="mb-3 p-4 bg-dark text-white p-2">
+        <div class="d-flex flex-column">
+            <h3>Code: {{ course.code }} </h3>
+            <h3>Description: {{ course.description }} </h3>
+            <h3>Duration: {{ course.duration }}</h3>
+            <h3>Credits: {{  course.credits}}</h3>
+            <div class="d-sm-flex">
+                <h4 class="fw-bold me-3 rating-label">{{ course.rating }}</h4>
+                <ngx-stars *ngIf="course.rating" class="pt-1" [readonly]="true" [size]="1" [initialStars]="course.rating" color="#FFD700"></ngx-stars>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-7 col-xl-8 mb-3 border p-3" *ngIf="course.learningObjectives?.length">
+        <h2 class="fw-bold">What you'll learn</h2>
+        <div class="row">
+                <div class="col-md-6 mb-3" *ngFor="let obj of course.learningObjectives">
+                    <i class="fa fa-check me-2"></i>{{ obj }}
+                </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-7 col-xl-8 mb-3" *ngIf="course.requirements?.length">
+        <h2 class="fw-bold">Requirements</h2>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let req of course.requirements">
+                {{ req }}
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6 col-lg-7 col-xl-8 mb-3">
+        <h2 class="fw-bold">Description</h2>
+        <p class="p-3 text-justify">{{ course.detailedDescription}}</p>
+    </div>
+    
+<div class="col-md-6 col-lg-7 col-xl-8 mb-3 pb-3">
+    <h2 class="fw-bold">Course Subjects</h2>
+    <div class="h4 text-center text-danger" *ngIf="!course.subjects?.length">No subjects exist for this course</div>
+    <mat-expansion-panel togglePosition="before" class="mb-2" *ngFor="let subject of course.subjects">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h3 class="fw-bold pt-3">{{ subject.name }}</h3>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="container-fluid">
+            Description: {{ subject.description }} <br>
+            Requirements: {{ subject.requirements }} <br>
+            Instructor: {{ subject.instructor }}<br>
+            <span class="mt-3 download-content" *ngIf="courseId === enrolledCourseId" (click)="onDownloadContent(subject.content)">
+                <i class="fa fa-download ms-auto me-2"></i>Download content
+            </span>
+        </div>
+    </mat-expansion-panel>
+</div>   
+</div>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

@@ -1,0 +1,52 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>Certificate</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close></i>
+</div>
+<mat-dialog-content>
+<form (ngSubmit)="onSubmit()" #inputForm="ngForm">
+    <mat-form-field appearance="outline" class="col-12">
+        <mat-label>Enter Roll Number</mat-label>
+        <input 
+            matInput
+            type="text"
+            name="rollNo"
+            [(ngModel)]="inputs.rollNo"
+            required
+            #rollNo="ngModel">
+        <mat-error *ngIf="rollNo.touched && rollNo.invalid">
+            <span *ngIf="rollNo.hasError('required')">This field is required</span>
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-12">
+        <mat-label>Enter Year</mat-label>
+        <input 
+            matInput
+            type="text"
+            name="year"
+            [(ngModel)]="inputs.year"
+            required
+            #year="ngModel">
+        <mat-error *ngIf="year.touched && year.invalid">
+            <span *ngIf="year.hasError('required')">This field is required</span>
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-12">
+        <mat-label>Enter registered course name</mat-label>
+        <input 
+            matInput
+            type="text"
+            name="course"
+            [(ngModel)]="inputs.course"
+            required
+            #course="ngModel">
+        <mat-error *ngIf="course.touched && course.invalid">
+            <span *ngIf="course.hasError('required')">This field is required</span>
+        </mat-error>
+    </mat-form-field>
+    <button
+        mat-raised-button
+        color="primary"
+        [disabled]="inputForm.invalid"
+        >Submit</button>
+    </form>
+</mat-dialog-content>

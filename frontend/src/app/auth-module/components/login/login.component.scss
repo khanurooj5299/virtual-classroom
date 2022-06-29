@@ -1,0 +1,10 @@
+mat-card{
+    max-width: 450px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+mat-radio-group + mat-error > span{
+    font-size: 11px;
+    padding-left: 10px;
+}

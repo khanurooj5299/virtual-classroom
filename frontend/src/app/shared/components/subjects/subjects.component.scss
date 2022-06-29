@@ -1,0 +1,17 @@
+table {
+    width: 100%;
+}
+
+th,td {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+
+i:hover{
+    cursor: pointer
+}
+
+.table-container {
+    height: 63vh;
+    overflow: auto;
+}

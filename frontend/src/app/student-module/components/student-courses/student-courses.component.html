@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row mt-3">
+    <div class=" col-md-6 col-xl-4 mb-4 d-flex justify-content-center" *ngFor="let course of courses">
+      <mat-card>
+        <img mat-card-image [src]="course.image" class="mb-3">
+        <mat-card-content>
+          <h2 class="fw-bold">{{course.name}}</h2>
+          <div class="col-12 d-flex">
+            <h4 class="fw-bold me-3">{{ course.rating }}</h4>
+            <ngx-stars *ngIf="course.rating" class="pt-1" [readonly]="true" [size]="1" [initialStars]="course.rating" color="#FFD700"></ngx-stars>
+            <i class="fa fa-2x fa-eye ms-auto text-info" (click)="onViewCourse(course._id)"></i>
+          </div>
+          </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <a routerLink="/course/courses" class="float-end mt-3"><h1>more...</h1></a>
+</div>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

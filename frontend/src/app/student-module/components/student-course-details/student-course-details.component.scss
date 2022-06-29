@@ -1,0 +1,30 @@
+img {
+    max-height: 300px;
+    max-width: 300px;
+    border: 1px solid #888888;
+}
+
+mat-card {
+    max-width: 300px;
+}
+
+.rating-label {
+    color: #FFD700;
+}
+.enroll-button {
+    max-width: 300px;
+}
+
+@media screen and (min-width: 768px){
+    .picture-card {
+        z-index: 99999;
+        position: sticky;
+        top: 70px;
+        margin-right: 50px;
+        margin-top: 20px
+    }
+}
+
+.download-content:hover {
+    cursor: pointer;
+}

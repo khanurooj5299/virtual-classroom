@@ -1,0 +1,40 @@
+<div class="container">
+    <h2 class="text-center">{{subject.name}}</h2>
+    <div class="row">
+        <div class="col-6">
+            <h3>Instructor: {{subject.instructor}}</h3>
+        </div>
+        <div class="col-6 d-flex">
+            <h3 class="me-2">Remaining Time:</h3>
+            <div class="pt-1">
+                <countdown #cd [config]="countDownConfig" (event)="handleCountDown($event)"></countdown>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h2>Question {{attemptedQuestions + 1}} :</h2>
+    <h3>{{question.question}}</h3>
+    <mat-radio-group [(ngModel)]="response.response" required #responseInput="ngModel">
+        <mat-radio-button 
+            *ngFor="let option of question.options"
+            class="col-6 mb-3"
+            [value]="option">{{option}}</mat-radio-button>
+    </mat-radio-group>
+    <div class="d-flex justify-content-center">
+            <button
+                *ngIf="attemptedQuestions<numOfQuestions-1"
+                mat-raised-button
+                color="primary" 
+                type="button"
+                [disabled]="responseInput.invalid"
+                (click)="onSaveAndNext()">Save and next</button>
+            <button 
+                *ngIf="attemptedQuestions==numOfQuestions-1"
+                mat-raised-button
+                color="primary"
+                type="button"
+                [disabled]="responseInput.invalid"
+                (click)="onSubmit()">Submit</button>
+        </div>
+</div>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

@@ -1,0 +1,9 @@
+::ng-deep .test .mat-tab-header {
+    background-color: #fafafa !important;
+}
+
+mat-tab-group {
+    height: 100%;
+    background-color: #f8ceec;
+    background-image: linear-gradient(315deg, #f8ceec 0%, #a88beb 74%);
+}

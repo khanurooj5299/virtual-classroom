@@ -1,0 +1,61 @@
+<div class="container mt-2">
+    <button 
+        *ngIf="roleId==1"
+        mat-raised-button 
+        color="primary" 
+        class="mb-3 me-2" 
+        (click)="onAddSubject()">Add Subject</button>
+    <div class="d-flex justify-content-end">
+        <i class="fa fa-undo fa-2x" (click)="onBack()"></i>
+    </div>
+    <h4 *ngIf="subjects.length">Subjects: </h4>
+    <div class="h4 text-center text-danger" *ngIf="!subjects.length">No subjects exist for this course</div>
+    <div class="d-flex justify-content-end">
+        <mat-form-field appearance="standard" *ngIf="subjects.length">
+            <mat-label>Filter</mat-label>
+            <input 
+                matInput
+                type="text"
+                (keyup)="applyFilter($event)"
+                >
+        </mat-form-field>
+    </div>
+    <div class="table-container">
+    <table mat-table [dataSource]="dataSource" *ngIf="subjects.length">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let subject"> {{ subject.name }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let subject"> {{subject.description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="requirements">
+            <th mat-header-cell *matHeaderCellDef> Requirements </th>
+            <td mat-cell *matCellDef="let subject"> {{subject.requirements}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="instructor">
+            <th mat-header-cell *matHeaderCellDef> Instructor </th>
+            <td mat-cell *matCellDef="let subject"> {{subject.instructor}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let subject">
+                <i class="fa fa-trash me-3" (click)="onRemoveSubject(subject._id)" *ngIf="roleId == 1"></i>
+                <i class="fa fa-pencil" (click)="onEditSubject(subject)" *ngIf="roleId==1"></i>
+                <i class="fa fa-upload me-3" (click)="onAddContent( subject._id )" *ngIf="roleId == 2"></i>
+                <i class="fa fa-pencil" (click)="onEditContent( subject._id )" *ngIf="roleId == 2"></i>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

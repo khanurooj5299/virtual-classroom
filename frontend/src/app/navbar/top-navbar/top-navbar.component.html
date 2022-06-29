@@ -1,0 +1,30 @@
+<div class="top-navbar pt-3 pb-1 px-3 row">
+    <div class="col-sm-12 col-md-4 d-flex">
+      <i class="fa fa-bars fa-lg mt-2 me-3" (click)="onToggleSidenav()"></i>
+      <h2>Virtual Classroom</h2>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div *ngIf="isSearchBoxVisible" class="d-flex col-8">
+        <input 
+          type="text"
+          class="form-control"
+          placeholder="Search a course"
+          [(ngModel)]="searchValue"
+          (input)="onSearchBoxChange()">
+        <i class="fa fa-search mt-1"></i>
+      </div>
+    </div>
+    <div class="col-sm-12 d-flex justify-content-md-end" [ngClass]="{'col-md-2': requestCount==undefined, 'col-md-1': requestCount!=undefined}">
+      <i class="fa fa-sign-out fa-2x mt-2" (click)="onLogout()"></i>
+    </div>
+    <div class="col-sm-12 col-md-1 d-flex justify-content-md-end" *ngIf="requestCount!=undefined"><!--needed because requestCount can be zero also-->
+      <i 
+        [matBadge]="requestCount"
+        matBadgeColor="warn"
+        class="fa fa-bell-o fa-2x mt-2" 
+        [matMenuTriggerFor]="requestMenu"></i>
+      <mat-menu #requestMenu="matMenu">
+        <a mat-menu-item (click)="onStaffRegisterRequests()">Staff register requests</a>
+      </mat-menu>
+    </div>
+</div>

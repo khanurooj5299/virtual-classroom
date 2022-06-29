@@ -1,0 +1,40 @@
+<div class="container mt-3">
+  <div class="h4 text-center text-danger" *ngIf="!certificate">{{errorMssg}}</div>
+  <div *ngIf="certificate" id="print-section">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="d-flex">
+            <h2 class="me-3">Name: </h2>
+            <h3 class="pt-1">{{certificate.studentDetails.personalDetails?.firstname}} {{certificate.studentDetails.personalDetails?.lastname}}</h3>
+          </div>
+          <div class="d-flex">
+            <h2 class="me-3">Roll No: </h2>
+            <h3 class="pt-1">{{certificate.studentDetails._id}}</h3>
+          </div>
+          <div class="d-flex">
+            <h2 class="me-3">Fathers name: </h2>
+            <h3 class="pt-1">{{certificate.studentDetails.personalDetails?.fathersname}}</h3>
+          </div>
+          <div class="d-flex">
+            <h2 class="me-3">Course: </h2>
+            <h3 class="pt-1">{{certificate.registeredCourse.name}}</h3>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 d-flex justify-content-center">
+            <img [src]="certificate.studentDetails.images?.selfImg" alt="">
+        </div>
+    </div>
+    <table mat-table [dataSource]="certificate.resultSubjects">
+        <ng-container matColumnDef="subject">
+            <th mat-header-cell *matHeaderCellDef>Subject</th>
+            <td mat-cell *matCellDef="let subject">{{subject.subjectName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="percentage">
+            <th mat-header-cell *matHeaderCellDef>Percentage</th>
+            <td mat-cell *matCellDef="let subject">{{subject.percentage}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['subject', 'percentage']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['subject', 'percentage'];"></tr>
+    </table>
+  </div>
+</div>

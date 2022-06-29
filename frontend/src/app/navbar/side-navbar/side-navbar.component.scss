@@ -1,0 +1,28 @@
+mat-drawer {
+    min-width: 200px;
+    z-index: 100000;
+    position: fixed;
+}
+
+@media  screen and (max-width: 767px) {
+    .mat-drawer {
+        top: 104px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .mat-drawer {
+        top: 68px;
+    }
+}
+
+.initials {
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button {
+    text-align: center;
+}

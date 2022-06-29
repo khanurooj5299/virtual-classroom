@@ -1,0 +1,132 @@
+<mat-card class="mt-5">
+  <mat-card-title class="pt-3 pb-3">Register</mat-card-title>
+  <mat-card-content>
+    <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+      <div class="row">
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Full name</mat-label>
+          <input 
+            matInput 
+            type="text"
+            name="name"
+            (blur)="userRegisterModel.name=userRegisterModel.name?.toUpperCase()"
+            [(ngModel)]="userRegisterModel.name"
+            required
+            pattern="^[a-zA-Z]+(?:\s[a-zA-Z]+)+$"
+            #name="ngModel">
+          <mat-error *ngIf="name.invalid && (name.touched || registerForm.submitted)">
+            <span *ngIf="name.hasError('required')">This field is required</span>
+            <span *ngIf="name.hasError('pattern')">Please enter full name (firstname followed by a single space , followed by a lastname.
+                                                   Only letters are allowed).
+            </span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Email</mat-label>
+          <input 
+            matInput 
+            type="text" 
+            name="email" 
+            [(ngModel)]="userRegisterModel.email"
+            required
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            #email="ngModel"
+            [disabled]="editMode">
+          <mat-error *ngIf="email.invalid && (email.touched || registerForm.submitted)">
+            <span *ngIf="email.hasError('required')">This field is required</span>
+            <span *ngIf="email.hasError('pattern')">Enter valid email</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Role</mat-label>
+          <mat-select 
+            color="primary" 
+            name="roleId" 
+            [(ngModel)]="userRegisterModel.roleId"
+            required
+            #roleId="ngModel">
+            <mat-option *ngFor="let role of roles" [value]="role.roleId">
+              {{role.roleName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="roleId.invalid && (roleId.touched || registerForm.submitted)">
+            <span *ngIf="roleId.hasError('required')">This field is required</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Contact Number</mat-label>
+          <input 
+            matInput 
+            type="tel" 
+            name="contact" 
+            [(ngModel)]="userRegisterModel.contact"
+            required
+            pattern="^[0-9]{10}$"
+            #contact="ngModel">
+          <mat-error *ngIf="contact.invalid && (contact.touched || registerForm.submitted)">
+            <span *ngIf="contact.hasError('required')">This field is required</span>
+            <span *ngIf="contact.hasError('pattern')">Enter a valid 10 digit phone number</span>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline" class="col-12" *ngIf="!editMode">
+          <mat-label>Password</mat-label>
+          <input 
+            matInput 
+            type="password" 
+            name="password" 
+            [(ngModel)]="userRegisterModel.password"
+            required
+            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+            #password="ngModel">
+          <mat-error *ngIf="password.invalid && (password.touched || registerForm.submitted)">{{ getErrorMessage(password) }}</mat-error>
+        </mat-form-field> -->
+
+        <!-- <mat-form-field appearance="outline" class="col-12" *ngIf="!editMode">
+          <mat-label>Confirm password</mat-label>
+          <input 
+            matInput 
+            type="password" 
+            name="c_password"
+            [(ngModel)]="confirmPassword"
+            required
+            #c_password="ngModel">
+          <mat-error *ngIf="c_password.invalid && (c_password.touched || registerForm.submitted)">{{ getErrorMessage(c_password) }}</mat-error>
+        </mat-form-field> -->
+      </div>
+      <div class="col-sm-6">
+        <img [src]="userRegisterModel.image?userRegisterModel.image:preview" alt="avatar" class="img-fluid mx-auto d-block rounded-circle">
+        <input 
+          type="file" 
+          name="fileInput" 
+          (change)="onFileInput($event)" 
+          class="col-12 mt-4"
+          accept="image/.jpg, .jpeg, .png"
+          #fileInput>
+        <mat-error *ngIf="fileError"><span>{{fileError}}</span></mat-error>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          class="col-12 mt-4"
+          [disabled]="!userRegisterModel.image || registerForm.invalid">
+            {{editMode?'Update':'Register'}}
+          </button>
+        <button
+          *ngIf="editMode"
+          mat-raised-button 
+          color="primary" 
+          type="button" 
+          class="col-12 mt-4"
+          (click)="onBack()">Back</button>
+          
+      </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

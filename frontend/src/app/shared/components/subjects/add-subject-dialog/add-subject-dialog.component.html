@@ -1,0 +1,66 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>{{editMode?'Edit Subject':'Add Subject'}}</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close></i>
+</div>
+<mat-dialog-content>
+    <form #addSubjectForm="ngForm">
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Name</mat-label>
+            <input 
+                matInput
+                type="text"
+                name="name"
+                required
+                [(ngModel)]="subject.name"
+                #name="ngModel">
+            <mat-error *ngIf="name.invalid && name.touched">
+                <span *ngIf="name.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Requirements</mat-label>
+            <textarea 
+                matInput
+                name="requirements"
+                required
+                [(ngModel)]="subject.requirements"
+                #requirements="ngModel"></textarea>
+            <mat-error *ngIf="requirements.invalid && requirements.touched">
+                <span *ngIf="requirements.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Description</mat-label>
+            <textarea 
+                matInput
+                name="description"
+                required
+                [(ngModel)]="subject.description"
+                #description="ngModel"></textarea>
+            <mat-error *ngIf="description.invalid && description.touched">
+                <span *ngIf="description.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Instructor</mat-label>
+            <input
+                matInput
+                name="instructor"
+                required
+                [(ngModel)]="subject.instructor"
+                #instructor="ngModel">
+            <mat-error *ngIf="instructor.invalid && instructor.touched">
+                <span *ngIf="instructor.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <div class="d-flex justify-content-center mt-3">
+            <button
+                [disabled]="addSubjectForm.invalid"
+                type="submit"
+                mat-raised-button
+                color="primary"
+                (click)="onSubjectAdd()">{{editMode?'Update':'Add'}}</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

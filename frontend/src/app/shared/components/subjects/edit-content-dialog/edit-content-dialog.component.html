@@ -1,0 +1,37 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>{{mode=="edit"?'Edit content':'Download Content'}}</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close></i>
+</div>
+<mat-dialog-content>
+    <div class="h4 text-center text-danger" *ngIf="!content.length">No content added yet</div>
+    <div class="d-flex justify-content-end">
+        <mat-form-field appearance="standard" *ngIf="content.length">
+            <mat-label>Filter</mat-label>
+            <input 
+                matInput
+                type="text"
+                (keyup)="applyFilter($event)"
+                >
+        </mat-form-field>
+    </div>
+    <div class="table-container">
+    <table mat-table [dataSource]="dataSource" *ngIf="content.length">
+        <ng-container matColumnDef="fileName">
+            <th mat-header-cell *matHeaderCellDef>File Name</th>
+            <td mat-cell *matCellDef="let file"> {{ file.fileName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let file">
+                <i *ngIf="mode=='edit'" class="fa fa-2x fa-trash" (click)="onRemove(file._id)"></i>
+                <a [href]="sanitizer.bypassSecurityTrustUrl(file.file)" [download]="file.fileName" *ngIf="mode=='download'"><i class="fa fa-2x fa-download"></i></a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="mt-auto"></mat-paginator>
+</mat-dialog-content>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

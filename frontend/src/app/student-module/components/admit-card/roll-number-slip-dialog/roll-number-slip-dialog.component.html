@@ -1,0 +1,29 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>Roll number Slip</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close></i>
+</div>
+<div id="print-section">
+  <mat-dialog-content>
+      <div class="row mb-3">
+        <div class="col-md-6 mb-2">
+          <h3 class="fw-bold mb-1">Roll Number: </h3><span>{{student._id}}</span>
+          <h3 class="fw-bold mb-1 mt-2">Name: </h3><span>{{student.personalDetails?.firstname}} {{student.personalDetails?.lastname}}</span>
+        </div>
+        <div class="col-md-6 d-flex flex-column align-items-center">
+          <img [src]="student.images?.selfImg" alt="" class="mb-1">
+          <img [src]="student.images?.signImg" alt="">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <h3 class="fw-bold mb-1">Course Name: </h3><span>{{course.name}}</span>
+        <h3 class="fw-bold mb-1 mt-2">Course Credits: </h3><span>{{course.credits}}</span>
+      </div>
+  </mat-dialog-content>
+</div>
+<button
+      mat-raised-button
+      [useExistingCss]="true"
+      color="primary"
+      printSectionId="print-section"
+      ngxPrint>Print</button>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

@@ -1,0 +1,46 @@
+<div class="container mt-3">
+    <h2>Staff register requests:</h2>
+    <div class="h4 text-center text-danger" *ngIf="!staffRegisterRequests.length">No new requests</div>
+    <div class="d-flex justify-content-end">
+        <mat-form-field appearance="standard" *ngIf="staffRegisterRequests.length">
+            <mat-label>Filter</mat-label>
+            <input matInput type="text" (keyup)="applyFilter($event)">
+        </mat-form-field>
+    </div>
+    <div class="table-container" *ngIf="staffRegisterRequests.length">
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="checkbox">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox></mat-checkbox>   <! ????????-->
+                </th>
+                <td mat-cell *matCellDef="let request">
+                    <mat-checkbox
+                        (change)="onCheckboxChange($event, request._id)"></mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef>Image</th>
+                <td mat-cell *matCellDef="let request">
+                    <img [src]="request.image" class="thumbnail">
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let request">{{request.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let request">
+                    <i class="fa fa-lg fa-check me-3 text-success" (click)="onHandleRequest(request._id, true)"></i>
+                    <i class="fa fa-lg fa-times text-danger" (click)="onHandleRequest(request._id, false)"></i>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

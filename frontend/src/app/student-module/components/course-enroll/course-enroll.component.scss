@@ -1,0 +1,27 @@
+mat-card{
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+mat-grid-tile {
+    border-radius: 10px;
+}
+
+span{
+    font-size: 11px;
+    padding-left: 10px;
+}
+
+img {
+    max-height: 100px;
+    max-width: 100px
+}
+
+mat-grid-tile {
+    word-wrap: break-word;
+}
+
+mat-error {
+    position: relative;
+}

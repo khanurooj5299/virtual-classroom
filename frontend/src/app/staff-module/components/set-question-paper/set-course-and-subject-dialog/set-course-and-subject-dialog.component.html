@@ -1,0 +1,69 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>Select Course and Subject</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close="error"></i>
+</div>
+<mat-dialog-content>
+    <form (ngSubmit)="onProceed()">
+        <div class="h4 text-center text-danger" *ngIf="!courses.length">No courses exist</div>
+        <mat-form-field appearance="outline" class="col-12" *ngIf="courses.length">
+            <mat-label>Select a course</mat-label>
+            <mat-select 
+                [(ngModel)]="result.selectedCourse"
+                name="selectedCourse"
+                (selectionChange)="onCourseChange()"
+                [disabled]="dialogData.courseId" 
+                required
+                #courseInput="ngModel">
+                <mat-option *ngFor="let course of courses" [value]="course">{{course.name}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="courseInput.invalid && courseInput.touched">This field is required</mat-error>
+        </mat-form-field>
+
+        <div class="h4 text-center text-danger" *ngIf="!subjects.length && result.selectedCourse._id">No subjects exist for this course</div>
+        <mat-form-field appearance="outline" class="col-12" *ngIf="subjects.length">
+            <mat-label>Select a subject</mat-label>
+            <mat-select 
+                [(ngModel)]="result.selectedSubject" 
+                name="selectedSubject"
+                required
+                #subjectInput="ngModel">
+                <mat-option *ngFor="let subject of subjects" [value]="subject">{{subject.name}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="subjectInput.invalid && subjectInput.touched">This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-12" *ngIf="mode=='give-exam'">
+            <mat-label>Enter Roll Number</mat-label>
+            <input 
+                type="text"
+                matInput
+                [(ngModel)]="rollNo"
+                name="rollNo"
+                required
+                #rollNoInput="ngModel">
+            <mat-error *ngIf="rollNoInput.invalid && rollNoInput.touched">This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-12" *ngIf="mode=='result-card'">
+            <mat-label>Enter Year</mat-label>
+            <input 
+                type="number"
+                matInput
+                [(ngModel)]="result.year"
+                name="year"
+                required
+                #yearInput="ngModel">
+            <mat-error *ngIf="yearInput.invalid && yearInput.touched">This field is required</mat-error>
+        </mat-form-field>
+
+        <div class="d-flex justify-content-center">
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                class="mt-3"
+                [disabled]="!(result.selectedCourse && result.selectedSubject)">Proceed</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

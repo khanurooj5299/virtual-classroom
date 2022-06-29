@@ -1,0 +1,32 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>Add Content</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close></i>
+</div>
+<mat-dialog-content>
+    <input 
+        type="file" 
+        name="fileInput" 
+        (change)="onFileInput($event)" 
+        accept=".pdf"
+        multiple
+        #fileInput>
+    <button mat-raised-button color="primary" (click)="onChoose()">Choose Files</button>
+    <ul *ngIf="fileErrors.length" class="list-group mt-3">
+        <li class="list-group-item fw-bold bg-light">Errors:</li>
+        <li class=" text-danger list-group-item" *ngFor="let error of fileErrors"> {{error}} </li>
+    </ul>
+    <ul *ngIf="content.length" class="list-group mt-3">
+        <li class="list-group-item fw-bold bg-light">Valid selected files:</li>
+        <li class="list-group-item d-flex justify-content-between" *ngFor="let file of content; let i = index">
+            <span>{{ file.fileName }}</span>
+            <i class="fa fa-times" (click)="onRemoveFile(i)"></i>
+        </li>
+    </ul>
+<hr>
+<button 
+    mat-raised-button
+    color="primary"
+    [disabled]="!completed"
+    (click)="onAdd()">Add </button>
+</mat-dialog-content>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

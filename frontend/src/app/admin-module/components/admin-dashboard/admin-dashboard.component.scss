@@ -1,0 +1,40 @@
+.wrapper {
+    background-color: #dae2e9;
+}
+
+mat-card-content {
+    opacity: 0.7;
+}
+
+mat-card {
+    max-width: 200px;
+    min-height: 100px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+mat-card-header {
+    justify-content: center
+}
+
+table {
+    width: 100%;
+}
+
+.table-container {
+  height: 37vh;
+  overflow: auto;
+}
+
+.table-card {
+    max-width: 80% !important;
+}
+
+.table-card mat-card-content {
+    opacity: 1;
+}
+
+canvas {
+    max-height: 500px !important;
+    max-width: 800px !important;
+}

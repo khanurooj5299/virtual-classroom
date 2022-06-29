@@ -1,0 +1,22 @@
+<mat-drawer [opened]="openSidenav" class="float-start">
+  <button [matMenuTriggerFor]="profileOptions" class="bg-dark text-white initials px-3 pt-3 mt-3 mb-2"><h1>{{initials}}</h1></button>
+  <mat-menu #profileOptions="matMenu">
+    <button mat-menu-item (click)="onChangePassword()">Change password</button>
+    <button mat-menu-item (click)="onEditUser()">Edit</button>
+  </mat-menu>
+  <button mat-menu-item *ngIf="roleId==1||roleId==2" routerLink="/admin/dashboard">Dashboard</button>
+  <button mat-menu-item *ngIf="roleId==1||roleId==2" routerLink="/course/courses">Courses</button>
+  <button mat-menu-item *ngIf="roleId==3" routerLink="/student/courses">Courses</button>
+  <button mat-menu-item [matMenuTriggerFor]="examinations" *ngIf="roleId==2||roleId==3">Examinations</button>
+  <mat-menu #examinations="matMenu" class="ms-3">
+    <a mat-menu-item routerLink="/student/admit-card" *ngIf="roleId==3">Admit Card</a>
+    <a mat-menu-item routerLink="/staff/set-question-paper" *ngIf="roleId==2">Set Question Paper</a>
+    <a mat-menu-item routerLink="/student/give-exam" *ngIf="roleId==3">Exam</a>
+  </mat-menu>
+  <button mat-menu-item [matMenuTriggerFor]="results" *ngIf="roleId==3">Results</button>
+  <mat-menu #results="matMenu" class="ms-3">
+    <a mat-menu-item routerLink="/student/result-sheet">Result Sheet</a>
+    <a mat-menu-item routerLink="/student/certificate">Certificate</a>
+  </mat-menu>
+</mat-drawer>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

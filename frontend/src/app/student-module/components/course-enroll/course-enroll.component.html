@@ -1,0 +1,653 @@
+<mat-tab-group [selectedIndex]="activeTabIndex" mat-align-tabs="center">
+    <mat-tab label="Personal Details">
+        <mat-card class="mt-3">
+            <form #personalDetailsForm="ngForm">
+                <div class="row">
+                    <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Firstname</mat-label>
+                    <input 
+                        matInput
+                        type="text"
+                        name="firstname"
+                        (blur)="student.personalDetails!.firstname = student.personalDetails?.firstname?.toUpperCase()"
+                        [(ngModel)]="student!.personalDetails!.firstname"
+                        required
+                        pattern="^[a-zA-Z]+$"
+                        #firstname="ngModel">
+                    <mat-error *ngIf="firstname.invalid && (firstname.touched)">
+                        <span *ngIf="firstname.hasError('required')">This field is required</span>
+                        <span *ngIf="firstname.hasError('pattern')">Name can only contain letters</span>
+                    </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Lastname</mat-label>
+                    <input 
+                        matInput
+                        type="text"
+                        name="lastname"
+                        (blur)="student!.personalDetails!.lastname = student!.personalDetails!.lastname?.toUpperCase()"
+                        [(ngModel)]="student!.personalDetails!.lastname"
+                        required
+                        pattern="^[a-zA-Z]+$"
+                        #lastname="ngModel">
+                    <mat-error *ngIf="lastname.invalid && (lastname.touched)">
+                        <span *ngIf="lastname.hasError('required')">This field is required</span>
+                        <span *ngIf="lastname.hasError('pattern')">Name can only contain letters</span>
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                <label class="col-sm-12 col-md-3">Gender:</label>
+                <mat-radio-group 
+                    color="primary"
+                    [(ngModel)]="student!.personalDetails!.gender"
+                    name="gender"
+                    class="col-sm-12 col-md-6"
+                    required
+                    #gender="ngModel">
+                    <mat-radio-button value="female" class=" ms-3 me-3">Female</mat-radio-button>
+                    <mat-radio-button value="male" class="ms-3">Male</mat-radio-button>
+                </mat-radio-group>
+                </div>
+                <mat-error *ngIf="gender.invalid && (gender.touched)">
+                    <span>This field is required</span>
+                </mat-error>
+
+                <mat-form-field appearance="outline" class="mt-4">
+                    <mat-label>Date of Birth</mat-label>
+                    <input 
+                        matInput 
+                        [matDatepicker]="picker" 
+                        name="dob"
+                        [(ngModel)]="student!.personalDetails!.dob"
+                        (dateChange)="onDobChange($event)"
+                        [max]="maxDateForAge"
+                        required
+                        readonly
+                        #dob="ngModel">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker disabled="false"></mat-datepicker>
+                    <mat-error>
+                        <span *ngIf="dob.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12 mt-3">
+                <mat-label>Age</mat-label>
+                <input 
+                    matInput
+                    type="number"
+                    name="age"
+                    [(ngModel)]="student!.personalDetails!.age"
+                    min="18"
+                    max="30"
+                    required
+                    readonly
+                    #age="ngModel">
+                <mat-error *ngIf="age.touched">
+                    <span *ngIf="age.hasError('required')">This field is required</span>
+                    <span *ngIf="age.hasError('min')">Minimum allowed age is 18</span>
+                    <span *ngIf="age.hasError('max')">Maximum allowed age is 30</span>
+                </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Fathers Name</mat-label>
+                <input 
+                    matInput
+                    type="text"
+                    name="fathersname"
+                    (blur)="student!.personalDetails!.fathersname = student!.personalDetails!.fathersname?.toUpperCase()"
+                    [(ngModel)]="student!.personalDetails!.fathersname"
+                    required
+                    pattern="^[a-zA-Z]+(?:\s[a-zA-Z]+)+$"
+                    #fathersname="ngModel">
+                <mat-error *ngIf="fathersname.invalid && (fathersname.touched)">
+                    <span *ngIf="fathersname.hasError('required')">This field is required</span>
+                    <span *ngIf="fathersname.hasError('pattern')">Please enter full name (firstname followed by a single space , followed by a lastname.
+                                                   Only letters are allowed).
+                    </span>
+                </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Mothers Name</mat-label>
+                <input 
+                    matInput
+                    type="text"
+                    name="mothersname"
+                    (blur)="student!.personalDetails!.mothersname = student!.personalDetails!.mothersname?.toUpperCase()"
+                    [(ngModel)]="student!.personalDetails!.mothersname"
+                    required
+                    pattern="^[a-zA-Z]+(?:\s[a-zA-Z]+)+$"
+                    #mothersname="ngModel">
+                <mat-error *ngIf="mothersname.invalid && (mothersname.touched)">
+                    <span *ngIf="mothersname.hasError('required')">This field is required</span>
+                    <span *ngIf="mothersname.hasError('pattern')">Please enter full name (firstname followed by a single space , followed by a lastname.
+                                                Only letters are allowed).
+                    </span>
+                </mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="primary" class="me-3 mb-2" (click)="onBack()"> Back </button>
+                <button 
+                    mat-raised-button 
+                    color="primary" 
+                    type="button" 
+                    (click)="onSave(1)" 
+                    [disabled]="personalDetailsForm.invalid">Save and Next</button>
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Address Details" [disabled]="personalDetailsForm.invalid">
+        <mat-card class="mb-3">
+            <form #addressDetailsForm="ngForm">
+              <h3>Current Address</h3>
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Country</mat-label>
+                    <mat-select 
+                        matInput
+                        name="cCountry"
+                        [(ngModel)]="student!.addressDetails!.current!.country"
+                        required
+                        (selectionChange)="onCountryChange($event)"
+                        #cCountry="ngModel">
+                        <mat-option *ngFor="let country of countries" [value]="country.name">{{country.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="cCountry.invalid && (cCountry.touched)">
+                        <span *ngIf="cCountry.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>State</mat-label>
+                    <mat-select
+                        matInput
+                        name="cState"
+                        [(ngModel)]="student!.addressDetails!.current!.state"
+                        (selectionChange)="onStateChange($event)"
+                        required
+                        #cState="ngModel">
+                        <mat-option *ngFor="let state of currentStates" [value]="state.name">{{state.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="cState.invalid && (cState.touched)">
+                        <span *ngIf="cState.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>City</mat-label>
+                    <mat-select
+                        matInput
+                        name="cCity"
+                        [(ngModel)]="student!.addressDetails!.current!.city"
+                        required
+                        #cCity="ngModel">
+                        <mat-option *ngFor="let city of currentCities" [value]="city.name">{{city.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="cCity.invalid && (cCity.touched)">
+                        <span *ngIf="cCity.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>House No.</mat-label>
+                    <input 
+                        matInput
+                        type="text"
+                        name="cHouseNo"
+                        [(ngModel)]="student!.addressDetails!.current!.houseNo"
+                        required
+                        #cHouseNo="ngModel">
+                        <mat-error *ngIf="cHouseNo.invalid && (cHouseNo.touched)">
+                            <span *ngIf="cHouseNo.hasError('required')">This field is required</span>
+                        </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Pincode</mat-label>
+                    <input 
+                        matInput
+                        type="text"
+                        name="cPincode"
+                        [(ngModel)]="student!.addressDetails!.current!.pincode"
+                        required
+                        pattern="^[1-9][0-9]{5}$"
+                        #cPincode="ngModel">
+                        <mat-error *ngIf="cPincode.invalid && (cPincode.touched)">
+                            <span *ngIf="cPincode.hasError('required')">This field is required</span>
+                            <span *ngIf="cPincode.hasError('pattern')">Enter a valid pincode</span>
+                        </mat-error>
+                </mat-form-field>
+
+              <h3>Permanent Address</h3>
+                <mat-checkbox (change)="onAddressCheckBoxChange($event)"> Same as current address</mat-checkbox>
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Country</mat-label>
+                    <mat-select
+                        matInput
+                        name="pCountry"
+                        [(ngModel)]="student!.addressDetails!.permanent!.country"
+                        (selectionChange)="onCountryChange($event)"
+                        required
+                        #pCountry="ngModel">
+                        <mat-option *ngFor="let country of countries" [value]="country.name">{{country.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="pCountry.invalid && (pCountry.touched)">
+                        <span *ngIf="pCountry.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>State</mat-label>
+                    <mat-select 
+                        matInput
+                        name="pState"
+                        [(ngModel)]="student!.addressDetails!.permanent!.state"
+                        (selectionChange)="onStateChange($event)"
+                        required
+                        #pState="ngModel">
+                        <mat-option *ngFor="let state of permanentStates" [value]="state.name">{{state.name}}</mat-option> 
+                    </mat-select>
+                    <mat-error *ngIf="pState.invalid && (pState.touched)">
+                        <span *ngIf="pState.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>City</mat-label>
+                    <mat-select
+                        matInput
+                        name="pCity"
+                        [(ngModel)]="student!.addressDetails!.permanent!.city"
+                        required
+                        #pCity="ngModel">
+                        <mat-option *ngFor="let city of permanentCities" [value]="city.name">{{city.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="pCity.invalid && (pCity.touched)">
+                        <span *ngIf="pCity.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>House No.</mat-label>
+                    <input 
+                        matInput
+                        type="text"
+                        name="pHouseNo"
+                        [(ngModel)]="student!.addressDetails!.permanent!.houseNo"
+                        required
+                        #pHouseNo="ngModel">
+                        <mat-error *ngIf="pHouseNo.invalid && (pHouseNo.touched)">
+                            <span *ngIf="pHouseNo.hasError('required')">This field is required</span>
+                        </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Pincode</mat-label>
+                    <input 
+                        matInput
+                        type="text"
+                        name="pPincode"
+                        [(ngModel)]="student!.addressDetails!.permanent!.pincode"
+                        required
+                        pattern="^[1-9][0-9]{5}$"
+                        #pPincode="ngModel">
+                        <mat-error *ngIf="pPincode.invalid && (pPincode.touched)">
+                            <span *ngIf="pPincode.hasError('required')">This field is required</span>
+                            <span *ngIf="pPincode.hasError('pattern')">Enter a valid pincode</span>
+                        </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" class="me-3 mb-2" (click)="onPrevious(0)"> Back </button>
+                <button 
+                    mat-raised-button 
+                    color="primary" 
+                    type="button" 
+                    (click)="onSave(2)" 
+                    [disabled]="personalDetailsForm.invalid || addressDetailsForm.invalid">Save and Next</button>
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Academic Details" [disabled]="personalDetailsForm.invalid || addressDetailsForm.invalid">
+      <div class="container">
+            <form #academicDetailsForm="ngForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>Highest Qualification</mat-label>
+                    <mat-select 
+                        matInput
+                        name="highestQualification"
+                        [(ngModel)]="student.academicDetails!.highestQualification"
+                        required
+                        #highestQualification="ngModel">
+                        <mat-option value="secondary">Secondary</mat-option>
+                        <mat-option value="seniorSecondary">Senior secondary</mat-option>
+                        <mat-option value="graduate">Graduate</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="highestQualification.invalid && (highestQualification.touched)">
+                        <span *ngIf="highestQualification.hasError('required')">This field is required</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="row"
+                    *ngIf=" student.academicDetails!.highestQualification==='secondary' || 
+                            student.academicDetails!.highestQualification==='seniorSecondary' || 
+                            student.academicDetails!.highestQualification==='graduate'">
+                    <div class="col-md-2"><h2 class="pt-3">Secondary:</h2></div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Board</mat-label>
+                            <input 
+                                matInput
+                                type="text"
+                                name="secBoard"
+                                [(ngModel)]="student.academicDetails?.secDetails!.secBoard"
+                                required
+                                #secBoard="ngModel">
+                            <mat-error *ngIf="secBoard.invalid && (secBoard.touched)">
+                                <span *ngIf="secBoard.hasError('required')">This field is required</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marks Obtained</mat-label>
+                            <input 
+                                matInput
+                                type="number"
+                                name="secMarksObtained"
+                                [(ngModel)]="student.academicDetails?.secDetails!.secMarksObtained"
+                                (change)="onMarksChange('sec')"
+                                required
+                                #secMarksObtained="ngModel">
+                            <mat-error *ngIf="secMarksObtained.invalid && (secMarksObtained.touched)">
+                                <span *ngIf="secMarksObtained.hasError('required')">This field is required</span>
+                                <span *ngIf="secMarksObtained.hasError('greater')">
+                                    Obtained marks cannot be greater than total marks
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marks Total</mat-label>
+                            <input 
+                                matInput
+                                type="number"
+                                name="secMarksTotal"
+                                [(ngModel)]="student.academicDetails?.secDetails!.secMarksTotal"
+                                (change)="onMarksChange('sec')"
+                                min="1"
+                                required
+                                #secMarksTotal="ngModel">
+                            <mat-error *ngIf="secMarksTotal.invalid && (secMarksTotal.touched)">
+                                <span *ngIf="secMarksTotal.hasError('required')">This field is required</span>
+                                <span *ngIf="secMarksTotal.hasError('min')">Total marks cannot be less than one</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Percentage</mat-label>
+                            <input 
+                                matInput
+                                disabled
+                                type="number"
+                                name="secPercentage"
+                                [(ngModel)]="student.academicDetails?.secDetails!.secPercentage"
+                                required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row"
+                    *ngIf=" student.academicDetails!.highestQualification==='seniorSecondary' || 
+                            student.academicDetails!.highestQualification==='graduate'" >
+                    <div class="col-md-2"><h2 class="pt-3">Senior Secondary:</h2></div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Board</mat-label>
+                            <input 
+                                matInput
+                                type="text"
+                                name="senSecBoard"
+                                [(ngModel)]="student.academicDetails?.senSecDetails!.senSecBoard"
+                                required
+                                #senSecBoard="ngModel">
+                            <mat-error *ngIf="senSecBoard.invalid && (senSecBoard.touched)">
+                                <span *ngIf="senSecBoard.hasError('required')">This field is required</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marks Obtained</mat-label>
+                            <input 
+                                matInput
+                                type="number"
+                                name="senSecMarksObtained"
+                                [(ngModel)]="student.academicDetails?.senSecDetails!.senSecMarksObtained"
+                                (change)="onMarksChange('senSec')"
+                                required
+                                #senSecMarksObtained="ngModel">
+                            <mat-error *ngIf="senSecMarksObtained.invalid && (senSecMarksObtained.touched)">
+                                <span *ngIf="senSecMarksObtained.hasError('required')">This field is required</span>
+                                <span *ngIf="senSecMarksObtained.hasError('greater')">
+                                    Obtained marks cannot be greater than total marks
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marks Total</mat-label>
+                            <input 
+                                matInput
+                                type="number"
+                                name="senSecMarksTotal"
+                                [(ngModel)]="student.academicDetails?.senSecDetails!.senSecMarksTotal"
+                                (change)="onMarksChange('senSec')"
+                                min="1"
+                                required
+                                #senSecMarksTotal="ngModel">
+                            <mat-error *ngIf="senSecMarksTotal.invalid && (senSecMarksTotal.touched)">
+                                <span *ngIf="senSecMarksTotal.hasError('required')">This field is required</span>
+                                <span *ngIf="senSecMarksTotal.hasError('min')">Total marks cannot be less than one</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Percentage</mat-label>
+                            <input 
+                                matInput
+                                disabled
+                                type="number"
+                                name="senSecPercentage"
+                                [(ngModel)]="student.academicDetails?.senSecDetails!.senSecPercentage"
+                                required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row"
+                    *ngIf=" student.academicDetails!.highestQualification==='graduate'">
+                    <div class="col-md-2"><h2 class="pt-3">Graduation:</h2></div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Board</mat-label>
+                            <input 
+                                matInput
+                                type="text"
+                                name="gradBoard"
+                                [(ngModel)]="student.academicDetails?.gradDetails!.gradBoard"
+                                required
+                                #gradBoard="ngModel">
+                            <mat-error *ngIf="gradBoard.invalid && (gradBoard.touched)">
+                                <span *ngIf="gradBoard.hasError('required')">This field is required</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marks Obtained</mat-label>
+                            <input 
+                                matInput
+                                type="number"
+                                name="gradMarksObtained"
+                                [(ngModel)]="student.academicDetails?.gradDetails!.gradMarksObtained"
+                                (change)="onMarksChange('grad')"
+                                required
+                                #gradMarksObtained="ngModel">
+                            <mat-error *ngIf="gradMarksObtained.invalid && (gradMarksObtained.touched)">
+                                <span *ngIf="gradMarksObtained.hasError('required')">This field is required</span>
+                                <span *ngIf="gradMarksObtained.hasError('greater')">
+                                    Obtained marks cannot be greater than total marks
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marks Total</mat-label>
+                            <input 
+                                matInput
+                                type="number"
+                                name="gradMarksTotal"
+                                [(ngModel)]="student.academicDetails?.gradDetails!.gradMarksTotal"
+                                (change)="onMarksChange('grad')"
+                                min="1"
+                                required
+                                #gradMarksTotal="ngModel">
+                            <mat-error *ngIf="gradMarksTotal.invalid && (gradMarksTotal.touched)">
+                                <span *ngIf="gradMarksTotal.hasError('required')">This field is required</span>
+                                <span *ngIf="gradMarksTotal.hasError('min')">Total marks cannot be less than one</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Percentage</mat-label>
+                            <input 
+                                matInput
+                                disabled
+                                type="number"
+                                name="gradPercentage"
+                                [(ngModel)]="student.academicDetails?.gradDetails!.gradPercentage"
+                                required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                  <button mat-raised-button color="primary" class="me-3 mb-2" (click)="onPrevious(1)"> Back </button>
+                  <button 
+                    mat-raised-button 
+                    color="primary" 
+                    type="button" 
+                    (click)="onSave(3)" 
+                    [disabled]="personalDetailsForm.invalid || addressDetailsForm.invalid || academicDetailsForm.invalid">Save and Next</button></div>
+            </form>
+          </div>
+    </mat-tab>
+    <mat-tab label="Upload" [disabled]="personalDetailsForm.invalid || addressDetailsForm.invalid || academicDetailsForm.invalid">
+        <mat-card class="mt-3">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                <h3>Upload your picture</h3>
+                <img [src]="student.images?.selfImg" alt="">
+                <input 
+                    type="file" 
+                    name="selfImg" 
+                    (change)="onFileInput($event)" 
+                    class="col-12"
+                    accept="image/.jpg, .jpeg, .png"
+                    #selfImg>
+                <mat-error><span> {{fileErrors.selfImgError}} </span></mat-error>
+                </div>
+
+                <div class="col-md-6">
+                <h3>Upload picture of your sign</h3>
+                 <img [src]="student.images?.signImg" alt="">
+                <input 
+                    type="file" 
+                    name="signImg" 
+                    (change)="onFileInput($event)" 
+                    class="col-12"
+                    accept="image/.jpg, .jpeg, .png"
+                    #signImg>
+                <mat-error><span> {{fileErrors.signImgError}} </span></mat-error>
+                </div>
+              </div>
+                <button mat-raised-button color="primary" class="me-3 mb-2" (click)="onPrevious(2)"> Back </button>
+                <button 
+                    mat-raised-button 
+                    color="primary" 
+                    type="button" 
+                    (click)="onSave(4)" 
+                    [disabled]="personalDetailsForm.invalid || addressDetailsForm.invalid || academicDetailsForm.invalid || !(student.images?.selfImg&&student.images?.signImg)">Save and Next</button>
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab 
+        label="Preview and Finish"
+        [disabled]="personalDetailsForm.invalid || addressDetailsForm.invalid || academicDetailsForm.invalid || !(student.images?.selfImg&&student.images?.signImg)"
+        >
+        <div class="container mb-3">
+          <div class="row">
+            <div class="col-md-8">
+                <h3>Personal Details:</h3>
+                <div>Firstname : {{student.personalDetails?.firstname}}</div>
+                <div>Lastname : {{student.personalDetails?.lastname}}</div>
+                <div>Gender : {{student.personalDetails?.gender}}</div>
+                <div>Age : {{student.personalDetails?.age}}</div>
+                <div>Fathers name : {{student.personalDetails?.fathersname}}</div>
+                <div>Mothers name : {{student.personalDetails?.mothersname}}</div>
+            </div>
+            <div class="col-md-4 d-flex flex-column">
+                <img [src]="student.images?.selfImg" alt="" class="mb-2">
+                <img [src]="student.images?.signImg" alt="">
+            </div>
+          </div>
+          <hr>
+          <h3 class="mt-3">Address Details:</h3>
+          <div class="row">
+            <div class="col-md-6">
+            <h5>Current:</h5>
+                <div>House No. : {{student.addressDetails?.current?.houseNo}}</div>
+                <div>City : {{student.addressDetails?.current?.city}}</div>
+                <div>State : {{student.addressDetails?.current?.state}}</div>
+                <div>Pincode : {{student.addressDetails?.current?.pincode}}</div>
+                <div>Country : {{student.addressDetails?.current?.country}}</div>
+            </div>
+            <div class="col-md-6">
+            <h5>Permanent:</h5>
+                <div>House No. : {{student.addressDetails?.permanent?.houseNo}}</div>
+                <div>City : {{student.addressDetails?.permanent?.city}}</div>
+                <div>State : {{student.addressDetails?.permanent?.state}}</div>
+                <div>Pincode : {{student.addressDetails?.permanent?.pincode}}</div>
+                <div>Country : {{student.addressDetails?.permanent?.country}}</div>
+            </div>
+          </div>
+          <hr>
+          <h3 class="mt-3">Academic Details:</h3>
+          <mat-grid-list cols="5" rowHeight="50px" gutterSize="10px">
+            <mat-grid-tile class="border-bottom text-break" *ngFor="let heading of ['Level','Board', 'Obtained Marks', 'Total Marks', 'Percentage']">{{heading}}</mat-grid-tile>
+            <mat-grid-tile *ngIf="student.academicDetails?.secDetails?.secBoard">Secondary </mat-grid-tile>
+            <mat-grid-tile class="border text-break" *ngFor="let detail of student.academicDetails?.secDetails|keyvalue">{{detail.value}}</mat-grid-tile>
+            <mat-grid-tile *ngIf="student.academicDetails?.senSecDetails?.senSecBoard">Senior Secondary </mat-grid-tile>
+            <mat-grid-tile class="border" *ngFor="let detail of student.academicDetails?.senSecDetails|keyvalue">{{detail.value}}</mat-grid-tile>
+            <mat-grid-tile *ngIf="student.academicDetails?.gradDetails?.gradBoard">Graduation </mat-grid-tile>
+            <mat-grid-tile class="border" *ngFor="let detail of student.academicDetails?.gradDetails|keyvalue">{{detail.value}}</mat-grid-tile>
+          </mat-grid-list>
+          <hr>
+          <button mat-raised-button color="primary" class="me-3 mb-2" (click)="onPrevious(3)"> Back </button>
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="primary" 
+            (click)="onEnroll()">Enroll</button>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

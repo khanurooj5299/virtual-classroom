@@ -1,0 +1,25 @@
+input{
+    border-radius: 20px;
+}
+
+i.fa-search {
+    position: relative;
+    right: 30px;
+    top: 8px;
+    color: black;
+}
+
+i {
+    cursor: pointer;
+}
+.top-navbar {
+    background-color: #673ab7;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 9000;
+}
+
+.row {
+    --bs-gutter-x: 0;
+}

@@ -1,0 +1,151 @@
+<div class="mb-3 d-flex">
+    <h2 mat-dialog-title>{{editMode?'Edit Course':'Add Course'}}</h2>
+    <i class="fa fa-2x fa-times-circle text-danger ms-auto" mat-dialog-close></i>
+</div>
+<mat-dialog-content>
+    <form #addCourseForm="ngForm">
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Code</mat-label>
+            <input 
+                matInput
+                type="text"
+                name="code"
+                required
+                [(ngModel)]="course.code"
+                #code="ngModel">
+            <mat-error *ngIf="code.invalid && code.touched">
+                <span *ngIf="code.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Name</mat-label>
+            <input 
+                matInput
+                type="text"
+                name="name"
+                required
+                [(ngModel)]="course.name"
+                #name="ngModel">
+            <mat-error *ngIf="name.invalid && name.touched">
+                <span *ngIf="name.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Duration</mat-label>
+            <input 
+                matInput
+                type="text"
+                name="duration"
+                required
+                [(ngModel)]="course.duration"
+                #duration="ngModel">
+                <mat-error *ngIf="duration.invalid && duration.touched">
+                    <span *ngIf="duration.hasError('required')">This field is required</span>
+                </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Credits</mat-label>
+            <input 
+                matInput
+                type="number"
+                name="credits"
+                [(ngModel)]="course.credits"
+                required
+                min="0"
+                #credits="ngModel">
+            <mat-error *ngIf="credits.invalid && credits.touched">
+                <span *ngIf="credits.hasError('required')">This field is required</span>
+                <span *ngIf="credits.hasError('min')">Credits cannot be less than 0</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Description</mat-label>
+            <textarea 
+                matInput
+                name="description"
+                rows="4"
+                required
+                [(ngModel)]="course.description"
+                #description="ngModel"></textarea>
+            <mat-error *ngIf="description.invalid && description.touched">
+                <span *ngIf="description.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Rating</mat-label>
+            <input 
+                matInput
+                type="number"
+                name="rating"
+                required
+                min="0"
+                max="5"
+                [(ngModel)]="course.rating"
+                #rating="ngModel">
+            <mat-error *ngIf="rating.invalid && rating.touched">
+                <span *ngIf="rating.hasError('required')">This field is required</span>
+                <span *ngIf="rating.hasError('min')">Minimum rating is 0</span>
+                <span *ngIf="rating.hasError('max')">Maximum rating is 5</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Detailed Description</mat-label>
+            <textarea
+                matInput
+                name="detailedDescription"
+                rows="4"
+                required
+                [(ngModel)]="course.detailedDescription"
+                #detailedDescription="ngModel"></textarea>
+            <mat-error *ngIf="detailedDescription.invalid && detailedDescription.touched">
+                <span *ngIf="detailedDescription.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Requirements</mat-label>
+            <textarea 
+                matInput
+                name="requirements"
+                rows="4"
+                placeholder="Enter each requirement in a new line"
+                required
+                ngModel
+                #requirements="ngModel"></textarea>
+            <mat-error *ngIf="requirements.invalid && requirements.touched">
+                <span *ngIf="requirements.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Learning Objectives</mat-label>
+            <textarea 
+                matInput
+                name="learningObjectives"
+                rows="4"
+                placeholder="Enter each learning objective in a new line"
+                required
+                ngModel
+                #learningObjectives="ngModel"></textarea>
+            <mat-error *ngIf="learningObjectives.invalid && learningObjectives.touched">
+                <span *ngIf="learningObjectives.hasError('required')">This field is required</span>
+            </mat-error>
+        </mat-form-field>
+        <img [src]="course.image" alt="" (click)="fileInput.click()">
+        <input
+            type="file" 
+            name="fileInput" 
+            class="col-12 mt-2"
+            (change)="onFileInput($event)"
+            accept="image/.jpg, .jpeg, .png"
+            #fileInput>
+        <mat-error *ngIf="fileError"><span>{{fileError}}</span></mat-error>
+        <div class="d-flex justify-content-center mt-3">
+            <button
+                [disabled]="addCourseForm.invalid || !course.image"
+                type="submit"
+                mat-raised-button
+                color="primary"
+                (click)="onCourseAdd()">{{editMode?'Update':'Add'}}</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

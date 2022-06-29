@@ -1,0 +1,101 @@
+<div class="container">
+    <form (ngSubmit)="onSaveAndNext()" #quesForm="ngForm">
+        <h2>Question {{addedQuestions + 1}} :</h2>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Enter Question</mat-label>
+            <textarea 
+                matInput
+                [(ngModel)]="question.question"
+                name="ques" 
+                rows="5"
+                required
+                #ques="ngModel"></textarea>
+            <mat-error *ngIf="ques.invalid && ques.touched">This field is required</mat-error>
+        </mat-form-field>
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Option 1</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    [(ngModel)]="question.options[0]"
+                    name="option1"
+                    required
+                    #option1="ngModel">
+                <mat-error *ngIf="option1.invalid && option1.touched">This field is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Option 2</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    [(ngModel)]="question.options[1]"
+                    name="option2"
+                    required
+                    #option2="ngModel">
+                <mat-error *ngIf="option2.invalid && option2.touched">This field is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Option 3</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    [(ngModel)]="question.options[2]"
+                    ngModel
+                    name="option3"
+                    required
+                    #option3="ngModel">
+                <mat-error *ngIf="option3.invalid && option3.touched">This field is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Option 4</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    [(ngModel)]="question.options[3]"
+                    ngModel
+                    name="option4"
+                    required
+                    #option4="ngModel">
+                <mat-error *ngIf="option4.invalid && option4.touched">This field is required</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Correct Option</mat-label>
+            <input
+                matInput
+                type="text"
+                [(ngModel)]="question.correctOption"
+                name="correctOption"
+                required
+                (change)="onCorrectOptionChange()"
+                #correctOption="ngModel">
+            <mat-error *ngIf="correctOption.invalid && correctOption.touched">This field is required</mat-error>
+        </mat-form-field>
+        <span class="text-danger" *ngIf="!correctOptionExists && correctOption.touched">Correct option should match one of the four entered options</span>
+        <div class="d-flex justify-content-center pb-3">
+            <button
+                *ngIf="addedQuestions<numOfQuestions-1"
+                mat-raised-button
+                color="primary" 
+                type="submit"
+                [disabled]="quesForm.invalid || !correctOptionExists">Save and next</button>
+            <button 
+                *ngIf="addedQuestions==numOfQuestions-1"
+                mat-raised-button
+                color="primary"
+                type="button"
+                [disabled]="quesForm.invalid || !correctOptionExists"
+                (click)="onSubmit()">Submit</button>
+        </div>
+    </form>
+</div>
+<div *ngIf="loaderService.isProcessing" class="loading"></div>

@@ -1,0 +1,13 @@
+mat-card{
+    max-width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+}
+img{
+    height: 50%
+}
+
+input[type="file"] + mat-error > span{
+    font-size: 11px;
+    padding-left: 10px;
+}
