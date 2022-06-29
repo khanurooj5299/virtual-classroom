@@ -8,7 +8,7 @@
           <div class="col-12 d-flex">
             <h4 class="fw-bold me-3">{{ course.rating }}</h4>
             <ngx-stars *ngIf="course.rating" class="pt-1" [readonly]="true" [size]="1" [initialStars]="course.rating" color="#FFD700"></ngx-stars>
-            <i class="fa fa-2x fa-eye ms-auto text-info" (click)="onViewCourse(course._id)"></i>
+            <i class="fa fa-2x fa-eye ms-auto text-danger" (click)="onViewCourse(course._id)"></i>
           </div>
           </mat-card-content>
       </mat-card>
